@@ -59,6 +59,15 @@ let accounts = []
 
 const savedLeads = JSON.parse(localStorage.getItem('myLeads'))
 
+// Get already Saved contracts on page load
+bookmarks.methods
+        .get()
+        .call()
+        .then(results => {
+            render(results)
+        })
+
+
 if (savedLeads) {
     myLeads = savedLeads
     render(myLeads)
@@ -73,22 +82,17 @@ saveEl.addEventListener('click', function(){
 
     bookmarks.methods
         .set(inputEl.value)
-        .send({from: accounts[0], gas: 1000000})
+        .send({from: accounts[0]})
         .then(() => {
             return bookmarks.methods
                 .get()
                 .call()
         })
         .then(results => {
-            console.log(results, 'from blockchian')
+            render(results)
         })
-    //myLeads.push(inputEl.value)
-    //localStorage.setItem('myLeads', JSON.stringify(myLeads))
-    // simple validation
-   
 
-    // render(myLeads)
-    // inputEl.value = ''
+     inputEl.value = ''
 })
 
 
